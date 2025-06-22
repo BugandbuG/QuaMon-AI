@@ -1,0 +1,6 @@
+A..OOO
+A.XX.B
+.CC..B
+.D.EE.
+.D.FF.
+...... 
