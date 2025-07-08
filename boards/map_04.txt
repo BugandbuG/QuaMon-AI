@@ -1,6 +1,0 @@
-.A..B.
-.A.XXB
-.C.D.E
-.C.D.E
-.F.G.H
-.F.G.H 

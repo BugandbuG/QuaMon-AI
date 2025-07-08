@@ -1,0 +1,6 @@
+.ABBCC
+.ADEFG
+.XXEFG
+HIKKK.
+HI....
+......

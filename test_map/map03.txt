@@ -1,0 +1,6 @@
+.G.AB.
+.G.ABC
+.GXXBC
+..FFFC
+....HH
+......
