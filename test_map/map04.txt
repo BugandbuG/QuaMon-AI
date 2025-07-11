@@ -1,6 +1,6 @@
-AAB...
-..BC..
-.XXC.D
-EEEC.D
-F....D
-F..GGG
+.AAABB
+..CDDE
+XXCFGE
+HIIFGK
+HLL..K
+MMNNNK

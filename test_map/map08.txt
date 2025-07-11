@@ -1,6 +1,6 @@
-.ABBCC
-.ADEFG
-.XXEFG
-HIKKK.
-HI....
-......
+E..AAA
+EBB.HD
+EXXCHD
+IIIC.D
+.JFGGG
+.JF...

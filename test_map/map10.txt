@@ -1,6 +1,6 @@
-.AA.BB
-....CC
-.XXDEF
-GGGDEF
-HIIIKK
-H.....
+A..BBB
+ACCD.E
+XXFD.E
+..FGGE
+..HII.
+..HKKK

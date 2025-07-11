@@ -1,6 +1,6 @@
-A..BBB
-A....C
-.XX..C
-..EDDC
-..E...
-FF....
+AAB.CC
+D.BEEE
+DFXXGH
+IFKKGH
+IFLLLM
+INNOOM

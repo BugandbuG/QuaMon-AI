@@ -1,6 +1,6 @@
-.G.AB.
-.G.ABC
-.GXXBC
-..FFFC
-....HH
-......
+ABCCDD
+ABEEFG
+ABXXFG
+HHIKFG
+..IKLL
+.MMNN.

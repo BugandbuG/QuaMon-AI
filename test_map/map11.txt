@@ -1,6 +1,6 @@
-.ABCDD
-.ABC.E
-XXBC.E
-FGHHIK
-FG..IK
-FG....
+AABCCC
+..B..D
+XXB..D
+EFFGGD
+EHHI..
+...I..
