@@ -10,7 +10,7 @@ def main():
     """
     Main function to run the Rush Hour GUI.
     """
-    boards_dir = 'boards'
+    boards_dir = 'test_map'
     gui = GUI(boards_dir)
     gui.run()
 
