@@ -1,0 +1,60 @@
+\newpage
+
+\section{Algorithm Description}
+From this section, we will assign the variables as follows: 
+\begin{itemize}
+    \item $F_1$ is Hours Studied.
+    \item $F_2$ is Previous Scores.
+    \item $F_3$ is Extracurricular Activities.
+    \item $F_4$ is Sleep Hours.
+    \item $F_5$ is Sample Question Papers Practiced."
+\end{itemize}
+
+\subsection{Breadth-First Search - BFS}
+
+\subsubsection*{Description}
+The Breadth-First Search is a traversing algorithm used to satisfy a given property by searching the tree or graph data structure. It belongs to uninformed or blind search AI algorithms as it operates solely based on the connectivity of nodes and does not prioritize any particular path over another based on heuristic knowledge or domain-specific information. It does not incorporate any additional information beyond the structure of the search space. It is optimal for unweighted graphs and is particularly suitable when all actions have the same cost. Due to its systematic search strategy, BFS can efficiently explore even infinite state spaces.\cite{geeksforgeeks-bfs}
+
+\subsubsection*{Algorithm Process}
+
+\begin{enumerate}
+    \item Create an initial node from the initial state.
+    \item If it is already the goal, return it.
+    \item Initialize a queue (\texttt{frontier}) with the initial node.
+    \item Maintain a set (\texttt{reached}) of explored states.
+    \item While the queue is not empty:
+    \begin{itemize}
+        \item Pop the front node.
+        \item Generate all valid successors.
+        \item If a successor is the goal, reconstruct and return the path.
+        \item If the successor has not been visited, enqueue it and mark it reached.
+    \end{itemize}
+    \item Return \texttt{None} if the goal is not found.
+\end{enumerate}
+
+\subsubsection*{Key Characteristics of BFS}
+
+\begin{itemize}
+    \item \textbf{First-in-First-Out (FIFO):} \\
+    BFS typically uses a FIFO queue to manage the order of node exploration. This ensures that older nodes (shallower in the tree) are expanded before newer nodes (deeper in the tree). FIFO queues are faster than priority queues in this context and help maintain the correct order of exploration. When a new node is generated, it is added to the back of the queue, while the oldest node is removed and expanded.
+
+    \item \textbf{Early Goal Test:} \\
+    Traditional BFS implementations keep a set of visited or reached states. However, to improve efficiency, the algorithm often performs an early goal test: as soon as a new node is generated, it is immediately checked against the goal condition. This reduces memory overhead and speeds up solution detection.
+
+    \item \textbf{Cost-Optimality:} \\
+    BFS guarantees the shortest path in terms of the number of steps when all moves have the same cost. Since it explores all nodes at depth $d$ only after all nodes at depth $d - 1$ have been explored, the first time it encounters a goal node, that node will be part of the shallowest solution path. Therefore, BFS is considered cost-optimal for uniform step costs.
+\end{itemize}
+
+\subsubsection*{Input and Output}
+\begin{itemize}
+    \item \textbf{Input:} Initial game state and board configuration
+    \item \textbf{Output:} A list of states representing the shortest path from start to goal, or \texttt{None} if no solution exists
+\end{itemize}
+
+\subsubsection*{Complexity}
+\begin{itemize}
+    \item \textbf{Time Complexity:} $O(b^d)$ where $b$ is the branching factor and $d$ is the depth of the shallowest solution.
+    \item \textbf{Space Complexity:} $O(b^d)$ due to queue storage of all nodes at each level.
+\end{itemize}
+
+

@@ -1,6 +1,6 @@
-..A...
-..A.XXB
-..C.DDB
-..C.E.F
-GG.E.F.
-...HH.. 
+...ABB
+...A..
+XX.A.C
+D....C
+D.EEE.
+FF....

@@ -1,0 +1,6 @@
+..A.BB
+..A.CC
+..XXDD
+..E.FF
+..E.GG
+..H.II

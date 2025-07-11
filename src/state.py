@@ -43,7 +43,7 @@ class State:
                 for i in range(1, board.width):
                     if vehicle.x + vehicle.length - 1 + i < board.width and grid[vehicle.y][vehicle.x + vehicle.length -1 + i] == '.':
                         new_vehicles = copy.deepcopy(self.vehicles)
-                        new_vehicles[vid].x += i
+                        new_vehicles[vid].x += 1
                         successors.append(State(new_vehicles))
                     else:
                         break
@@ -51,7 +51,7 @@ class State:
                 for i in range(1, board.width):
                     if vehicle.x - i >= 0 and grid[vehicle.y][vehicle.x - i] == '.':
                         new_vehicles = copy.deepcopy(self.vehicles)
-                        new_vehicles[vid].x -= i
+                        new_vehicles[vid].x -= 1
                         successors.append(State(new_vehicles))
                     else:
                         break
@@ -60,7 +60,7 @@ class State:
                 for i in range(1, board.height):
                     if vehicle.y + vehicle.length - 1 + i < board.height and grid[vehicle.y + vehicle.length - 1 + i][vehicle.x] == '.':
                         new_vehicles = copy.deepcopy(self.vehicles)
-                        new_vehicles[vid].y += i
+                        new_vehicles[vid].y += 1
                         successors.append(State(new_vehicles))
                     else:
                         break
@@ -68,7 +68,7 @@ class State:
                 for i in range(1, board.height):
                     if vehicle.y - i >= 0 and grid[vehicle.y - i][vehicle.x] == '.':
                         new_vehicles = copy.deepcopy(self.vehicles)
-                        new_vehicles[vid].y -= i
+                        new_vehicles[vid].y -= 1
                         successors.append(State(new_vehicles))
                     else:
                         break

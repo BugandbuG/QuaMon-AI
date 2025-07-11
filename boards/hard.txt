@@ -1,6 +1,6 @@
-OOB.XX
-P.B.A.
-P.C.A.
-Q.C.R.
-Q.D.R.
-..D.EE 
+.OOOA.
+..B.A.
+CCBXXD
+..B.AD
+EEEF.D
+G..FHH

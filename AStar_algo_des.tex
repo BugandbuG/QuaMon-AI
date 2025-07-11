@@ -1,0 +1,59 @@
+\newpage
+
+\section{Algorithm Description}
+From this section, we will assign the variables as follows: 
+\begin{itemize}
+    \item $F_1$ is Hours Studied.
+    \item $F_2$ is Previous Scores.
+    \item $F_3$ is Extracurricular Activities.
+    \item $F_4$ is Sleep Hours.
+    \item $F_5$ is Sample Question Papers Practiced."
+\end{itemize}
+
+\subsection{A* Search Algorithm}
+
+\subsubsection*{Description}
+The A* (A-star) algorithm is a best-first search algorithm that finds the optimal path from a start node to a goal node. It belongs to informed search AI algorithms as it uses heuristic knowledge to guide the search process more efficiently than uninformed search methods. A* combines the advantages of Dijkstra's algorithm (guaranteed shortest path) with the efficiency of greedy best-first search (heuristic guidance). It evaluates nodes by combining the actual cost from the start node with a heuristic estimate of the cost to reach the goal. This makes A* both optimal and efficient when using an admissible heuristic function.\cite{hart1968formal}
+
+\subsubsection*{Algorithm Process}
+
+\begin{enumerate}
+    \item Create an initial node from the initial state with cost $g = 0$.
+    \item If it is already the goal, return it.
+    \item Initialize a priority queue (\texttt{frontier}) with the initial node, prioritized by $f(n) = g(n) + h(n)$.
+    \item Maintain a dictionary (\texttt{explored}) of visited states with their best costs.
+    \item While the priority queue is not empty:
+    \begin{itemize}
+        \item Pop the node with the lowest $f(n)$ value.
+        \item If this node is the goal, reconstruct and return the path.
+        \item Generate all valid successors.
+        \item For each successor, calculate $g(n) = \text{current cost} + \text{move cost}$.
+        \item If the successor has not been visited or has a better cost, add it to the frontier and update explored states.
+    \end{itemize}
+    \item Return \texttt{None} if the goal is not found.
+\end{enumerate}
+
+\subsubsection*{Key Characteristics of A*}
+
+\begin{itemize}
+    \item \textbf{Evaluation Function:} \\
+    A* uses the evaluation function $f(n) = g(n) + h(n)$ where $g(n)$ is the actual cost from the start to node $n$, and $h(n)$ is the heuristic estimate from node $n$ to the goal. This function guides the search toward the most promising nodes first, making the algorithm more efficient than uninformed search methods.
+
+    \item \textbf{Admissible Heuristic:} \\
+    For A* to guarantee optimal solutions, the heuristic function must be admissible, meaning it never overestimates the true cost to reach the goal ($h(n) \leq h^*(n)$). An admissible heuristic ensures that A* will always find the shortest path if one exists. In the Rush Hour puzzle, the blocking heuristic counts the number of vehicles blocking the red car's path, which is admissible.
+
+    \item \textbf{Optimality and Completeness:} \\
+    A* is both optimal and complete when using an admissible heuristic. It guarantees finding the shortest path to the goal if one exists, and it will always terminate in finite search spaces. The algorithm explores nodes in order of increasing $f$-value, ensuring that the first goal node encountered represents the optimal solution.
+\end{itemize}
+
+\subsubsection*{Input and Output}
+\begin{itemize}
+    \item \textbf{Input:} Initial game state, board configuration, and heuristic function
+    \item \textbf{Output:} A list of states representing the optimal path from start to goal, or \texttt{None} if no solution exists
+\end{itemize}
+
+\subsubsection*{Complexity}
+\begin{itemize}
+    \item \textbf{Time Complexity:} $O(b^d)$ in the worst case, where $b$ is the branching factor and $d$ is the depth of the optimal solution. However, with a good heuristic, A* can perform significantly better.
+    \item \textbf{Space Complexity:} $O(b^d)$ due to storage of all generated nodes in the frontier and explored sets.
+\end{itemize}

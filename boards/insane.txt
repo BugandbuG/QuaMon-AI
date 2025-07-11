@@ -1,0 +1,6 @@
+.AABBB
+..C..D
+EECXXD
+..C..D
+.FFGGG
+......

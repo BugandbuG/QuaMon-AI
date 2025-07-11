@@ -1,0 +1,380 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{longtable}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{geometry}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\geometry{margin=1in}
+\pagestyle{fancy}
+\fancyhf{}
+\rhead{A* Algorithm in Rush Hour Solver}
+\lfoot{\today}
+\rfoot{\thepage}
+
+% Code styling
+\lstset{
+    language=Python,
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue},
+    commentstyle=\color{green},
+    stringstyle=\color{red},
+    numbers=left,
+    numberstyle=\tiny,
+    frame=single,
+    breaklines=true,
+    showstringspaces=false
+}
+
+\title{A* Algorithm in Rush Hour Solver}
+\author{AI Project Documentation}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+\tableofcontents
+\newpage
+
+\section{Theory of A* Algorithm}
+
+\subsection{Introduction}
+
+The A* (A-star) algorithm is an informed search algorithm that combines the best features of uniform-cost search and greedy best-first search. It uses both the actual cost from the start and a heuristic estimate to the goal to find optimal solutions efficiently.
+
+\subsection{Core Concept}
+
+A* uses an evaluation function to guide its search:
+\begin{equation}
+f(n) = g(n) + h(n)
+\end{equation}
+
+Where:
+\begin{itemize}
+    \item $f(n)$ = estimated total cost through node $n$
+    \item $g(n)$ = actual cost from start to node $n$
+    \item $h(n)$ = heuristic estimate from node $n$ to goal
+\end{itemize}
+
+\subsection{Key Properties}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|p{6cm}|}
+\hline
+\textbf{Property} & \textbf{Description} \\
+\hline
+Optimal & Finds shortest path if heuristic is admissible \\
+\hline
+Complete & Always finds solution if one exists \\
+\hline
+Efficient & Uses heuristic to guide search toward goal \\
+\hline
+Admissible Heuristic & Never overestimates true cost: $h(n) \leq h^*(n)$ \\
+\hline
+\end{tabular}
+\caption{A* Algorithm Properties}
+\end{table}
+
+\subsection{Basic Algorithm}
+
+\begin{enumerate}
+    \item Start with initial node in open set
+    \item While open set is not empty:
+    \begin{enumerate}
+        \item Select node with lowest $f(n)$ value
+        \item If goal reached, return solution path
+        \item Move node to closed set
+        \item Add valid neighbors to open set
+    \end{enumerate}
+    \item Return failure if no solution found
+\end{enumerate}
+
+\section{Detailed Description of A* Algorithm}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Information} & \textbf{Details} \\
+\hline
+Algorithm Name & A* Search (A-Star Search) \\
+\hline
+Algorithm Type & Informed Search Algorithm \\
+\hline
+Time Complexity & $O(b^d)$ in worst case, but usually much more efficient \\
+\hline
+Space Complexity & $O(b^d)$ \\
+\hline
+\end{tabular}
+\caption{A* Algorithm Overview}
+\end{table}
+
+\section{Input}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Parameter} & \textbf{Data Type} & \textbf{Description} \\
+\hline
+\texttt{board} & Board object & Rush Hour game board containing grid size and goal position information \\
+\hline
+\texttt{initial\_state} & State object & Initial state of the puzzle, containing positions of all vehicles \\
+\hline
+\end{tabular}
+\caption{Input Parameters}
+\end{table}
+
+\subsection{Input Details}
+\begin{itemize}
+    \item \textbf{Board}: Contains information about:
+    \begin{itemize}
+        \item Grid dimensions (width $\times$ height)
+        \item Goal position (goal\_pos) that the red car needs to reach
+        \item Movement space constraints
+    \end{itemize}
+    
+    \item \textbf{Initial State}: Contains:
+    \begin{itemize}
+        \item Dictionary of all vehicles with IDs and position information
+        \item Red car (ID = 'X') is the target vehicle to reach the goal
+    \end{itemize}
+\end{itemize}
+
+\section{Output}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{6cm}|}
+\hline
+\textbf{Result} & \textbf{Data Type} & \textbf{Description} \\
+\hline
+Success & List[State] & List of states from initial state to goal state \\
+\hline
+Failure & None & No solution found \\
+\hline
+\end{tabular}
+\caption{Output Specifications}
+\end{table}
+
+\subsection{Output Details}
+\textbf{List[State]}: Each State in the list represents one move step
+\begin{itemize}
+    \item State[0]: Initial state
+    \item State[1], State[2], ...: Intermediate move steps
+    \item State[n-1]: Goal state (red car has escaped)
+\end{itemize}
+
+\section{Detailed Algorithm Operation}
+
+\subsection{Initialization}
+
+\begin{lstlisting}[caption=Initialization Code]
+initial_node = Node(self.initial_state, path_cost=0)
+frontier = [(self._blocking_heuristic(initial_node.state), initial_node)]
+explored = {initial_node.state: 0}
+\end{lstlisting}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|p{8cm}|}
+\hline
+\textbf{Component} & \textbf{Description} \\
+\hline
+\texttt{initial\_node} & First node with initial state and cost = 0 \\
+\hline
+\texttt{frontier} & Priority queue containing unexplored nodes, sorted by $f(n) = g(n) + h(n)$ \\
+\hline
+\texttt{explored} & Dictionary storing explored states and their best costs \\
+\hline
+\end{tabular}
+\caption{Initialization Components}
+\end{table}
+
+\subsection{Main Loop}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|c|p{4cm}|p{6cm}|}
+\hline
+\textbf{Step} & \textbf{Action} & \textbf{Details} \\
+\hline
+1 & Get node with lowest priority & \texttt{current\_node = heapq.heappop(frontier)} \\
+\hline
+2 & Check termination condition & If red car reached goal position $\rightarrow$ return path \\
+\hline
+3 & Generate successor states & All valid moves from current state \\
+\hline
+4 & Calculate cost & $g(n) = \text{path\_cost} + \text{move\_cost}$ \\
+\hline
+5 & Calculate heuristic & $h(n) = \text{blocking\_heuristic(state)}$ \\
+\hline
+6 & Calculate priority & $f(n) = g(n) + h(n)$ \\
+\hline
+7 & Update frontier and explored & Add new node if unexplored or has better cost \\
+\hline
+\end{tabular}
+\caption{Main Loop Steps}
+\end{table}
+
+\subsection{Heuristic Function (Blocking Heuristic)}
+
+\begin{lstlisting}[caption=Blocking Heuristic Implementation]
+def _blocking_heuristic(self, state):
+    red_car = state.vehicles['X']
+    grid = state._create_grid(self.board)
+    blocking_cars = set()
+    
+    for i in range(red_car.x + red_car.length, self.board.width):
+        if grid[red_car.y][i] != '.':
+            blocking_cars.add(grid[red_car.y][i])
+    
+    return len(blocking_cars)
+\end{lstlisting}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|p{8cm}|}
+\hline
+\textbf{Component} & \textbf{Description} \\
+\hline
+Purpose & Estimate minimum steps needed for red car to escape \\
+\hline
+Calculation & Count distinct vehicles blocking red car's path to exit \\
+\hline
+Properties & Admissible (never overestimates) and Consistent \\
+\hline
+Range & From 0 (no blocking cars) to $n$ ($n$ blocking cars) \\
+\hline
+\end{tabular}
+\caption{Heuristic Function Properties}
+\end{table}
+
+\subsection{Cost Calculation}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|p{5cm}|}
+\hline
+\textbf{Cost Type} & \textbf{Formula} & \textbf{Meaning} \\
+\hline
+$g(n)$ & \texttt{current\_cost + vehicle.length} & Actual cost from initial state \\
+\hline
+$h(n)$ & \texttt{blocking\_heuristic(state)} & Estimated cost to goal \\
+\hline
+$f(n)$ & $g(n) + h(n)$ & Total estimated cost \\
+\hline
+\end{tabular}
+\caption{Cost Functions}
+\end{table}
+
+\subsection{Termination Conditions}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|l|}
+\hline
+\textbf{Condition} & \textbf{Action} \\
+\hline
+Goal found & \texttt{return self.\_reconstruct\_path(current\_node)} \\
+\hline
+Empty frontier & \texttt{return None} (no solution exists) \\
+\hline
+\end{tabular}
+\caption{Termination Conditions}
+\end{table}
+
+\section{Operation Example}
+
+\subsection{Initial State}
+\begin{verbatim}
++---+---+---+---+---+---+
+| A | A |   |   |   |   |
++---+---+---+---+---+---+
+| X | X | B | B |   |   |
++---+---+---+---+---+---+
+|   |   | C |   |   |   |
++---+---+---+---+---+---+
+\end{verbatim}
+
+\subsection{Calculation Steps}
+\begin{enumerate}
+    \item $h(\text{initial}) = 2$ (cars B and C block car X)
+    \item $g(\text{initial}) = 0$ (initial cost)
+    \item $f(\text{initial}) = 0 + 2 = 2$
+\end{enumerate}
+
+\subsection{After moving car A down}
+\begin{verbatim}
++---+---+---+---+---+---+
+|   |   |   |   |   |   |
++---+---+---+---+---+---+
+| X | X | B | B |   |   |
++---+---+---+---+---+---+
+| A | A | C |   |   |   |
++---+---+---+---+---+---+
+\end{verbatim}
+
+\begin{itemize}
+    \item $h(\text{new}) = 2$ (cars B and C still blocking)
+    \item $g(\text{new}) = 2$ (cost of moving car A with length 2)
+    \item $f(\text{new}) = 2 + 2 = 4$
+\end{itemize}
+
+\section{Advantages of A* in Rush Hour}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|p{8cm}|}
+\hline
+\textbf{Advantage} & \textbf{Description} \\
+\hline
+Optimal & Always finds optimal solution if heuristic is admissible \\
+\hline
+Efficient & Good heuristic reduces number of nodes to explore \\
+\hline
+Complete & Always finds solution if one exists \\
+\hline
+Intelligent & Prioritizes exploring most promising paths \\
+\hline
+\end{tabular}
+\caption{A* Algorithm Advantages}
+\end{table}
+
+\section{Comparison with Other Algorithms}
+
+\begin{table}[h!]
+\centering
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Algorithm} & \textbf{Optimal} & \textbf{Complete} & \textbf{Efficient} & \textbf{Memory} \\
+\hline
+BFS & \checkmark & \checkmark & $\times$ & High \\
+\hline
+DFS & $\times$ & $\times$ & $\times$ & Low \\
+\hline
+UCS & \checkmark & \checkmark & $\triangle$ & High \\
+\hline
+A* & \checkmark & \checkmark & \checkmark & High \\
+\hline
+\end{tabular}
+\caption{Algorithm Comparison}
+\end{table}
+
+\section{Conclusion}
+
+The A* algorithm provides an optimal and efficient solution for the Rush Hour puzzle by combining the benefits of uniform-cost search with an admissible heuristic function. The blocking heuristic effectively guides the search towards promising states while maintaining optimality guarantees.
+
+The implementation demonstrates the power of informed search algorithms in constraint satisfaction problems, where domain-specific knowledge can significantly improve performance compared to uninformed search strategies.
+
+\end{document}
