@@ -29,21 +29,21 @@ class BfsSolver(Solver):
             return self._reconstruct_path(initial_node)
 
         frontier = deque([initial_node])
-        explored = {initial_node.state}
+        reached = {initial_node.state}
 
         while frontier:
             current_node = frontier.popleft()
 
             for successor_state in current_node.state.get_successors(self.board):
-                if successor_state not in explored:
+                if successor_state not in reached:
                     successor_node = Node(state=successor_state, parent=current_node)
                     
                     if successor_node.state.is_goal_state(self.board):
                         return self._reconstruct_path(successor_node)
                     
                     frontier.append(successor_node)
-                    explored.add(successor_state)
-        
+                    reached.add(successor_state)
+
         return None # No solution found
 
 class DfsSolver(Solver):
@@ -53,7 +53,7 @@ class DfsSolver(Solver):
         if initial_node.state.is_goal_state(self.board):
             return self._reconstruct_path(initial_node)
 
-        frontier = [initial_node] 
+        frontier = [initial_node] # Stack for DFS
         explored = {initial_node.state}
 
         while frontier:
@@ -69,7 +69,7 @@ class DfsSolver(Solver):
                     frontier.append(successor_node)
                     explored.add(successor_state)
         
-        return None 
+        return None # No solution found
 
 class UcsSolver(Solver):
     def solve(self):

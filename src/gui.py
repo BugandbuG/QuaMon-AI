@@ -69,7 +69,7 @@ class GUI:
         self.clock = pygame.time.Clock()
         # Load grass background image once
         try:
-            self.grass_background = pygame.image.load(r"C:\Users\PC\Documents\GitHub\QuaMon-AI\grass.jpg")
+            self.grass_background = pygame.image.load('grass.jpg')
             self.grass_background = pygame.transform.scale(self.grass_background, (SCREEN_WIDTH, SCREEN_HEIGHT))
         except pygame.error as e:
             print(f"Failed to load grass background: {e}")
@@ -102,7 +102,7 @@ class GUI:
             'reset': pygame.Rect(40, 395, 170, 50)  # Moved down from 375 to 395
         }
 
-    def _load_board(self, board_file):
+    def _load_board(self, board_file):  
         """Loads a board and sets the initial state."""
         board_path = os.path.join(self.board_dir, board_file)
         self.current_board = Board(board_path)
@@ -181,10 +181,38 @@ class GUI:
             # Horizontal lines
             pygame.draw.line(self.screen, GRID_COLOR, (GRID_X, GRID_Y + i * CELL_SIZE), (GRID_X + GRID_WIDTH, GRID_Y + i * CELL_SIZE))
 
-        # Draw the exit based on the actual goal position
+        # Draw the exit based on the actual goal position with better visual design
         if self.current_board:
             exit_y = GRID_Y + self.current_board.goal_pos[1] * CELL_SIZE
-            pygame.draw.rect(self.screen, WHITE, (GRID_X + GRID_WIDTH - 3, exit_y, 6, CELL_SIZE))
+            
+            # Draw exit opening - wider and more visible
+            exit_rect = pygame.Rect(GRID_X + GRID_WIDTH - 8, exit_y + 5, 16, CELL_SIZE - 10)
+            
+            # Draw a gradient background for the exit
+            for i in range(exit_rect.width):
+                alpha = int(255 * (1 - i / exit_rect.width))
+                color = (255, 200, 200, alpha)
+                exit_strip = pygame.Surface((1, exit_rect.height), pygame.SRCALPHA)
+                exit_strip.fill(color)
+                self.screen.blit(exit_strip, (exit_rect.x + i, exit_rect.y))
+            
+            # Draw exit border with rounded corners
+            pygame.draw.rect(self.screen, (255, 0, 0), exit_rect, 3, border_radius=8)
+            
+            # Draw arrow pointing to exit
+            arrow_x = GRID_X + GRID_WIDTH + 20
+            arrow_y = exit_y + CELL_SIZE // 2
+            arrow_points = [
+                (arrow_x, arrow_y),
+                (arrow_x - 15, arrow_y - 8),
+                (arrow_x - 10, arrow_y),
+                (arrow_x - 15, arrow_y + 8)
+            ]
+            pygame.draw.polygon(self.screen, (255, 0, 0), arrow_points)
+            
+            # Draw "EXIT" text next to arrow
+            exit_text = self.small_font.render("EXIT", True, (255, 0, 0))
+            self.screen.blit(exit_text, (arrow_x + 5, arrow_y - 10))
 
     def draw_vehicles(self, state):
         """Draws all vehicles from a given state."""
