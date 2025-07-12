@@ -33,37 +33,6 @@ class BfsSolver(Solver):
 
         while frontier:
             current_node = frontier.popleft()
-<<<<<<< Updated upstream
-
-            for successor_state in current_node.state.get_successors(self.board):
-                if successor_state not in explored:
-                    successor_node = Node(state=successor_state, parent=current_node)
-                    
-                    if successor_node.state.is_goal_state(self.board):
-                        return self._reconstruct_path(successor_node)
-                    
-                    frontier.append(successor_node)
-                    explored.add(successor_state)
-        
-        return None # No solution found
-
-class DfsSolver(Solver):
-    def solve(self):
-        """
-        Solves the Rush Hour puzzle using Depth-First Search.
-        """
-        initial_node = Node(self.initial_state)
-        
-        if initial_node.state.is_goal_state(self.board):
-            return self._reconstruct_path(initial_node)
-
-        frontier = [initial_node] # Stack for DFS
-        explored = {initial_node.state}
-
-        while frontier:
-            current_node = frontier.pop() # LIFO
-=======
->>>>>>> Stashed changes
 
             for successor_state in current_node.state.get_successors(self.board):
                 if successor_state not in explored:

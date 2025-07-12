@@ -6,29 +6,21 @@ from solver import BfsSolver, DfsSolver, UcsSolver, AStarSolver
 
 # --- Constants ---
 # Screen dimensions
-<<<<<<< Updated upstream
-SCREEN_WIDTH = 800
-SCREEN_HEIGHT = 600
-=======
 SCREEN_WIDTH = 1050  # Increased width to accommodate better spacing
 SCREEN_HEIGHT = 800  # Increased height to accommodate moved elements
->>>>>>> Stashed changes
 # Grid dimensions
 GRID_WIDTH = 450
 GRID_HEIGHT = 450
 CELL_SIZE = GRID_WIDTH // 6
-<<<<<<< Updated upstream
-GRID_X = (SCREEN_WIDTH - GRID_WIDTH) // 2
-GRID_Y = (SCREEN_HEIGHT - GRID_HEIGHT) // 2
-=======
 GRID_X = 380  # Moved further right to accommodate wider control panel
 GRID_Y = 100
->>>>>>> Stashed changes
 # Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 GRAY = (200, 200, 200)
 GRID_COLOR = (128, 128, 128)
+DARK_GRAY = (100, 100, 100)
+BUTTON_COLOR = (220, 220, 220)
 # Vehicle Colors - a map of vehicle ID to color
 VEHICLE_COLORS = {
     'X': (255, 0, 0),     # Red car (special)
@@ -68,12 +60,13 @@ class GUI:
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Rush Hour Solver")
-        self.font = pygame.font.SysFont(None, 36)
+        self.font = pygame.font.SysFont('Arial', 24)
+        self.small_font = pygame.font.SysFont('Arial', 18)
+        self.title_font = pygame.font.SysFont('Arial', 32, bold=True)
         self.board_files = sorted([f for f in os.listdir(board_files_dir) if f.endswith('.txt')])
         self.solvers = ['BFS', 'DFS', 'UCS', 'A*']
         self.board_dir = board_files_dir
         self.clock = pygame.time.Clock()
-        
         # Load grass background image once
         try:
             self.grass_background = pygame.image.load(r"C:\Users\PC\Documents\GitHub\QuaMon-AI\grass.jpg")
@@ -92,10 +85,7 @@ class GUI:
         self.animation_step = 0
         self.animation_timer = 0
         self.message = ""
-<<<<<<< Updated upstream
-=======
         self.mouse_pos = (0, 0)
->>>>>>> Stashed changes
         
         self._load_board(self.board_files[self.current_board_idx])
         self._create_buttons()
@@ -103,15 +93,6 @@ class GUI:
     def _create_buttons(self):
         """Create button rectangles."""
         self.buttons = {
-<<<<<<< Updated upstream
-            'prev_board': pygame.Rect(BUTTON_MARGIN, 50, 50, 50),
-            'next_board': pygame.Rect(BUTTON_MARGIN + 60, 50, 50, 50),
-            'prev_solver': pygame.Rect(BUTTON_MARGIN, 120, 50, 50),
-            'next_solver': pygame.Rect(BUTTON_MARGIN + 60, 120, 50, 50),
-            'solve': pygame.Rect(BUTTON_MARGIN, 200, BUTTON_WIDTH, BUTTON_HEIGHT),
-            'play_pause': pygame.Rect(BUTTON_MARGIN, 270, BUTTON_WIDTH, BUTTON_HEIGHT),
-            'reset': pygame.Rect(BUTTON_MARGIN, 340, BUTTON_WIDTH, BUTTON_HEIGHT)
-=======
             'prev_board': pygame.Rect(40, 125, 50, 40),  # Moved down from 105 to 125
             'next_board': pygame.Rect(100, 125, 50, 40),  # Moved down from 105 to 125
             'prev_solver': pygame.Rect(40, 195, 50, 40),  # Moved down from 175 to 195
@@ -119,7 +100,6 @@ class GUI:
             'solve': pygame.Rect(40, 275, 170, 50),  # Moved down from 255 to 275
             'play_pause': pygame.Rect(40, 335, 170, 50),  # Moved down from 315 to 335
             'reset': pygame.Rect(40, 395, 170, 50)  # Moved down from 375 to 395
->>>>>>> Stashed changes
         }
 
     def _load_board(self, board_file):
@@ -167,13 +147,6 @@ class GUI:
                     self.is_animating = False
 
     def draw_background(self):
-<<<<<<< Updated upstream
-        self.screen.fill(WHITE)
-
-    def draw_grid(self):
-        # Draw the border of the grid
-        pygame.draw.rect(self.screen, GRID_COLOR, (GRID_X, GRID_Y, GRID_WIDTH, GRID_HEIGHT), 3)
-=======
         # Draw grass background image first
         if self.grass_background:
             self.screen.blit(self.grass_background, (0, 0))
@@ -201,7 +174,6 @@ class GUI:
         # Draw the main grid area with rounded corners
         pygame.draw.rect(self.screen, WHITE, (GRID_X, GRID_Y, GRID_WIDTH, GRID_HEIGHT), border_radius=10)
         
->>>>>>> Stashed changes
         # Draw grid lines
         for i in range(1, 6):
             # Vertical lines
@@ -219,13 +191,22 @@ class GUI:
         for vehicle in state.vehicles.values():
             color = VEHICLE_COLORS.get(vehicle.id, GRAY)
             if vehicle.orientation == 'h':
-                rect = pygame.Rect(GRID_X + vehicle.x * CELL_SIZE, GRID_Y + vehicle.y * CELL_SIZE, vehicle.length * CELL_SIZE, CELL_SIZE)
+                rect = pygame.Rect(GRID_X + vehicle.x * CELL_SIZE + 2, GRID_Y + vehicle.y * CELL_SIZE + 2, 
+                                 vehicle.length * CELL_SIZE - 4, CELL_SIZE - 4)
             else: # 'v'
-                rect = pygame.Rect(GRID_X + vehicle.x * CELL_SIZE, GRID_Y + vehicle.y * CELL_SIZE, CELL_SIZE, vehicle.length * CELL_SIZE)
+                rect = pygame.Rect(GRID_X + vehicle.x * CELL_SIZE + 2, GRID_Y + vehicle.y * CELL_SIZE + 2, 
+                                 CELL_SIZE - 4, vehicle.length * CELL_SIZE - 4)
             
-            pygame.draw.rect(self.screen, color, rect)
-            # Add a border to the vehicle
-            pygame.draw.rect(self.screen, BLACK, rect, 2)
+            # Draw vehicle with rounded corners
+            pygame.draw.rect(self.screen, color, rect, border_radius=8)
+            # Add a border to the vehicle with rounded corners
+            pygame.draw.rect(self.screen, BLACK, rect, 2, border_radius=8)
+            
+            # Draw vehicle ID on the vehicle
+            if rect.width > 30 and rect.height > 30:  # Only if vehicle is big enough
+                text_surf = self.small_font.render(vehicle.id, True, BLACK)
+                text_rect = text_surf.get_rect(center=rect.center)
+                self.screen.blit(text_surf, text_rect)
 
     def _handle_click(self, pos):
         if self.buttons['solve'].collidepoint(pos) and not self.solution_path:
@@ -257,10 +238,7 @@ class GUI:
         solver_class = solver_map[solver_name]
         solver = solver_class(self.current_board, State(self.current_board.vehicles))
         
-<<<<<<< Updated upstream
-=======
         # Simply solve the puzzle
->>>>>>> Stashed changes
         self.solution_path = solver.solve()
         
         if self.solution_path:
@@ -268,23 +246,6 @@ class GUI:
             self.animation_step = 0
             self.message = f"Solution found in {len(self.solution_path) - 1} moves."
         else:
-<<<<<<< Updated upstream
-            self.message = "No solution found."
-
-    def draw_ui(self):
-        """Draws the user interface elements."""
-        # Board selection
-        board_text = self.font.render(f"Board: {self.board_files[self.current_board_idx]}", True, BLACK)
-        self.screen.blit(board_text, (self.buttons['prev_board'].right + 30, 60))
-        self.draw_button("<", self.buttons['prev_board'])
-        self.draw_button(">", self.buttons['next_board'])
-        
-        # Solver selection
-        solver_text = self.font.render(f"Solver: {self.solvers[self.current_solver_idx]}", True, BLACK)
-        self.screen.blit(solver_text, (self.buttons['prev_solver'].right + 30, 130))
-        self.draw_button("<", self.buttons['prev_solver'])
-        self.draw_button(">", self.buttons['next_solver'])
-=======
             self.message = "No solution found!"
 
     def _calculate_solution_cost(self):
@@ -383,7 +344,6 @@ class GUI:
 
         # Add separator line with gradient effect
         pygame.draw.line(self.screen, (150, 150, 150), (40, 255), (220, 255), 2)
->>>>>>> Stashed changes
 
         # Solve button
         self.draw_button("Solve", self.buttons['solve'])
@@ -391,18 +351,9 @@ class GUI:
         play_pause_text = "Pause" if self.is_animating else "Play"
         self.draw_button(play_pause_text, self.buttons['play_pause'])
         # Reset button
-<<<<<<< Updated upstream
-        self.draw_button("Reset", self.buttons['reset'])
-        # Message display
-        if self.message:
-            msg_surf = self.font.render(self.message, True, BLACK)
-            self.screen.blit(msg_surf, (self.buttons['reset'].left, self.buttons['reset'].bottom + 20))
-        # Step count
-=======
         self.draw_button("Reset", self.buttons['reset'], BUTTON_COLOR)
         
         # Solution info display in control panel
->>>>>>> Stashed changes
         if self.solution_path:
             # Calculate costs
             current_cost = self._calculate_current_cost()
@@ -448,13 +399,6 @@ class GUI:
             # Step count
             step_text = f"Step: {self.animation_step + 1}/{len(self.solution_path)}"
             step_surf = self.font.render(step_text, True, BLACK)
-<<<<<<< Updated upstream
-            self.screen.blit(step_surf, (GRID_X, GRID_Y - 40))
-
-    def draw_button(self, text, rect, color=GRAY):
-        pygame.draw.rect(self.screen, color, rect)
-        pygame.draw.rect(self.screen, BLACK, rect, 2)
-=======
             
             # Cost display
             cost_text = f"Cost: {current_cost}/{total_cost}"
@@ -542,7 +486,6 @@ class GUI:
         pygame.draw.rect(self.screen, (255, 255, 255, 150), rect, 2, border_radius=8)
         
         # Center the text
->>>>>>> Stashed changes
         text_surf = self.font.render(text, True, BLACK)
         text_rect = text_surf.get_rect(center=rect.center)
         self.screen.blit(text_surf, text_rect) 
